@@ -1,0 +1,11 @@
+mm.for_setting:
+  title: 'Vk'
+  description: 'Configure vk-vk'
+  route_name: mm.for_setting
+  parent: 'system.admin_config_development'
+
+mm.fornew_setting:
+  title: 'Vk-token'
+  description: 'Configure token vk-vk'
+  route_name: mm.fornew_setting
+  parent: 'system.admin_config_development'

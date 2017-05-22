@@ -1,0 +1,33 @@
+mm.for_setting:
+  path: '/admin/config/development/mm'
+  defaults:
+    _form: 'Drupal\mm\Form\MmForm'
+    _title: 'mm-module'    
+  requirements:
+    _permission: 'administer site configuration'
+
+
+mm.fornew_setting:
+  path: '/admin/config/development/mm/new'
+  defaults:
+    _form: 'Drupal\mm\Form\MmnewForm'
+    _title: 'mm-module'    
+  requirements:
+    _permission: 'administer site configuration'
+
+# Первым делом объявляется машинное имя роута. Оно составляетсям из:
+# название_модуля.машинное_название_роута.
+mm.articlewithdata:
+  # Указываем путь роута, с лидирующим слешем.
+  path: '/data-store'
+  # Значения по умолчанию
+  defaults:
+    # Функция контроллера отвечающая за содержимое.
+    _controller: '\Drupal\mm\Controller\MmArticleController::helloWorld'
+  # В данном разделе указываются необходимые требования для роута.
+  requirements:
+    # Мы будем показывать страницу только тем, у кого есть права на просмотр
+    # содержимого.
+    _permission: 'view content'
+
+

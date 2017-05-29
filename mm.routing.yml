@@ -15,6 +15,14 @@ mm.fornew_setting:
   requirements:
     _permission: 'administer site configuration'
 
+mm.formore_setting:
+  path: '/admin/config/development/mm/more'
+  defaults:
+    _form: 'Drupal\mm\Form\MmmoreForm'
+    _title: 'mm-module'    
+  requirements:
+    _permission: 'administer site configuration'
+
 # Первым делом объявляется машинное имя роута. Оно составляетсям из:
 # название_модуля.машинное_название_роута.
 mm.articlewithdata:

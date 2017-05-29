@@ -66,17 +66,41 @@ $titles = $titles . '<p>' . $title . '</p>';
     $output['#markup'] = t($titles);
 
 */
-define("SCOPE",     "notify,photos,friends,audio,video,notes,pages,docs,status,questions,offers,wall,groups,messages,notifications,stats,ads,offline");      
+//define("SCOPE",     "notify,photos,friends,audio,video,notes,pages,docs,status,questions,offers,wall,groups,messages,notifications,stats,ads,offline");      
+;
 
-$client_id = \Drupal::config('mm.settings')->get('mm.group');
+//$token = \Drupal::config('mm.settings')->get('mm.token');
+$my_content = $_SESSION['my_content'];
+$nid = $_SESSION['nid'];
+$site = $_SESSION['site'];
+$check_bool = $_SESSION['check_bool'];
+$z = $_SESSION['z'];
+$title_myCustomField = $_SESSION['title_myCustomField'];
 
+if($my_content == null){
+$my_content = 'null';
+} 
+
+if($site == null){
+$site = 'null';
+}
+ 
+if($nid == null){
+$nid = 'null';
+}
+/*
+if($check_bool == null){
+$check_bool = 'null';
+}
+*/
 $output['#markup'] = 
-'http://api.vkontakte.ru/oauth/authorize?client_id=' .
-$client_id .
-'&scope=' .
-SCOPE .
-'&redirect_uri=http://api.vk.com/blank.html&display=page&response_type=token' ;
+'<p>' . 'static my_content = ' . $my_content . '</p>' .
+'<p>' . 'nid = ' . $nid . '</p>' .
+'<p>' . 'site =' . $site . '</p>' .
+'<p>' . 'check_bool =' . $z . '</p>' .
+'<p>' . 'title_myCustomField' . $title_myCustomField . '</p>'; 
 
+var_dump($check_bool);
  
     return $output;
   }

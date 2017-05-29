@@ -5,21 +5,17 @@ namespace Drupal\mm\Form;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
-//use Drupal\Core\Url;
+use Drupal\Core\Render\Element\Button;
+
 use Drupal\Core\Routing\TrustedRedirectResponse;
 
-//для возврата с vk на сайт
-use Drupal\Core\Url;
 
-/**
- * Configure mm settings for this site.
- */
-class MmForm extends ConfigFormBase {
+class MmmoreForm extends ConfigFormBase {
   /** 
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'mm_for_setting';
+    return 'mm_fornew_setting';
   }
 
   /** 
@@ -30,27 +26,26 @@ class MmForm extends ConfigFormBase {
       'mm.settings',
     ];
   }
+ public function buildForm(array $form, FormStateInterface $form_state) {
 
- 
 
 
-  /** 
-   * {@inheritdoc}
-   */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+
+
+
     $config = $this->config('mm.settings');
 
-    $form['group'] = array(
-      '#type' => 'textfield',
-      '#title' => $this->t('id приложения'),
-      '#default_value' => $config->get('mm.group'),
+  
+
+
+    $form['token'] = array(
+   //   '#type' => 'textfield',
+      '#title' => $this->t('token s vk'),
+    //  '#default_value' => 'poka pusto',
     );  
 
-     $form['id_clienta'] = array(
-      '#type' => 'textfield',
-      '#title' => $this->t('id клиента'),
-      '#default_value' => 'poka pusto',
-    );
+
+
 
     return parent::buildForm($form, $form_state);
   }
@@ -64,23 +59,16 @@ class MmForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
- 
-
-    
-    
-  
+   
 
     // Retrieve the configuration
     $this->config('mm.settings')
       // Set the submitted configuration setting
-      ->set('mm.group', $form_state->getValue('group'))
-      ->set('mm.id_clienta', $form_state->getValue('id_clienta'))     
+      ->set('mm.token', '')     
       ->save();
 
      parent::submitForm($form, $form_state);
-     
- /*
-  
+
 define("SCOPE",     "offline,wall");      
 
 $client_id = \Drupal::config('mm.settings')->get('mm.group');
@@ -93,13 +81,9 @@ $vk_url =
   '&redirect_uri=https://api.vk.com/blank.html&display=page&response_type=token' ;
 
 
-//редирект на гугл.
+//редирект на vk.
      $probe_url = new TrustedRedirectResponse($vk_url);
       $form_state->setResponse($probe_url);
 
-*/
-
-     
-  }
 }
-
+}

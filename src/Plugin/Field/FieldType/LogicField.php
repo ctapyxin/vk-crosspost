@@ -1,7 +1,7 @@
 <?php
 
 
-     
+    
     namespace Drupal\mm\Plugin\Field\FieldType;
  
     use Drupal\Core\Field\FieldItemBase;
@@ -42,7 +42,13 @@
   return $properties; 
       }
 
-
+public function preSave() {
+parent::preSave();
+$z = $this->getFieldDefinition()->getName();
+//$z = substr($z ,6);
+$_SESSION['z'] = $z;
+//kint($z);
+}
 
 }
 

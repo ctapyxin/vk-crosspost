@@ -1,0 +1,22 @@
+mm.for_setting.tab:
+  title: 'id приложения'
+  route_name: mm.for_setting
+  base_route: mm.for_setting
+
+mm.formore_setting:
+  title: 'Получение токена'
+  route_name: mm.formore_setting
+  base_route: mm.for_setting
+
+mm.formore_setting.tab:
+  title: 'Получение токена'
+  route_name: mm.formore_setting
+  parent_id: mm.formore_setting
+
+mm.fornew_setting:
+  title: 'Vk-token'
+  route_name: mm.fornew_setting
+  parent_id: mm.formore_setting
+
+
+

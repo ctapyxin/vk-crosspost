@@ -1,49 +1,85 @@
 <?php
 
-//namespace Drupal\mm;
+
 
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Entity\EntityInterface;
-//use Drupal\node\Plugin\Core\Entity\NodeInterface;
+use Drupal\Core\Field\Plugin\Field\FieldType;
 
 
 
 
-//$vk_crosspost = '';
+function attachPhoto($node){
+$uri = $node->get('field_image')->entity->uri->value;
+$url = file_create_url($uri);
+$attach = 'photo_' . $url;
+return $attach;
+}
+
+
+
+function attachLink($node){
+$site = 'http://' . \Drupal::request()->getHost();
+
+
+$nid = $node->id(); 
+
+
+$url_node = $site . '/node/' . $nid;
+$link = '<a href="' . $url_node . '"> Read more</a>'; 
+
+$_SESSION['site'] = $site;
+
+
+return $link;
+}
+
+
+function attach($node){
+$tumblr = 1;
+if ($tumblr == 3){
+return attachLink($node) . ',' . attachPhoto($node);
+} 
+if ($tumblr == 1){return attachLink($node);}
+if ($tumblr == 2){return attachPhoto($node);}
+}
+
 
 function crosspost($node){
-  
-  $linc_post = 'https://api.vk.com/method/wall.post?owner_id=' . 
-\Drupal::config('mm.settings')->get('mm.group') .
+
+$message = urlencode($node->getTitle()) ; 
+
+$linc_post = 'https://api.vk.com/method/wall.post?owner_id=' . 
+\Drupal::config('mm.settings')->get('mm.id_clienta') .
 '&friends_only=' .
 '' .
 '&from_group=' .
 '0' .
 '&message=' .
-$node->getTitle() .
+ $message .
 '&attachments=' .
-'' .
+attach($node) .
 '&access_token=' .
 \Drupal::config('mm.settings')->get('mm.token');
 
-
-
+/*
 $client = \Drupal::httpClient();
 $request = $client->get($linc_post);
 $response = $request->getBody();
+*/
+$_SESSION['my_content'] = $linc_post;
 
 return $linc_post;
 }
 
 
 
-function mm_node_presave(NodeInterface $node) {
 /*
-$body = $node->get('body')->value;
-$newbody = $body + 'my-content';
-$node->set('body',$newbody);
-*/
+ function mm_node_presave(NodeInterface $node) {
+
+
+$my_content = crosspost($node);
  
   if ($node->bundle() == 'article') {
    $vk_crosspost = $node->get('field_me')->value;
@@ -51,116 +87,61 @@ $node->set('body',$newbody);
    $node->set('body','vk-crosspost is null');
     } else {
        if ($vk_crosspost == true){
-       // $func = 'crosspost';
-        //$func($node);
-        $my_content = crosspost($node);
+        
         $node->set('body',$node->get('body')->value .'vk-crosspost is true' . $my_content );
        } else {
          $node->set('body','vk-crosspost is false');
          }
-      }
-
-     
-  } 
-}
-
-//var_dump($vk_crosspost);
-//echo 'vot-vot';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// если поле существует и истина делаем кросспост статьи
-/*
-function mm_node_presave(NodeInterface $node) {
-
-  if ($node->bundle() == 'article' and $node->hasField('my_logic_field') and $node->get('my_logic_field')->value) {
-   
-
-  $linc_post = 
-
-'https://api.vk.com/method/wall.post?owner_id=' . 
-\Drupal::config('mm.settings')->get('mm.group') .
-'&friends_only=' .
-'' .
-'&from_group=' .
-'0' .
-'&message=' .
-$node->getTitle() .
-'&attachments=' .
-'' .
-'&access_token=' .
-\Drupal::config('mm.settings')->get('mm.token');
-
-
-
-//$zapros = \Drupal::request()->query->get($linc_post);
-} else {
-$linc_post = 'nixrena';
-}
-   
-
-}
-
-var_dump($linc_post);
-echo 'vot-vot';
-
-
-function hook_entity_presave(Drupal\Core\Entity\EntityInterface $entity) {
-  if ($entity instanceof ContentEntityInterface && $entity->isTranslatable()) {
-    $route_match = \Drupal::routeMatch();
-    \Drupal::service('content_translation.synchronizer')->synchronizeFields($entity, $entity->language()->getId(), $route_match->getParameter('source_langcode'));
-  if($entity->bundle() == 'node'){
-   $node = $entity; 
-   if ($node->bundle() == 'article' and $node->get('my_logic_field')->value) {
-   
-
-    $linc_post = 
-'https://api.vk.com/method/wall.post?owner_id=' . 
-\Drupal::config('mm.settings')->get('mm.group') .
-'&friends_only=' .
-'' .
-'&from_group=' .
-'0' .
-'&message=' .
-$node->getTitle() .
-'&attachments=' .
-'' .
-'&access_token=' .
-\Drupal::config('mm.settings')->get('mm.token');
-
-$zapros = \Drupal::request()->query->get($linc_post);
-var_dump($zapros);
-  }  
-
-
+      }     
   }
- }
+//передача значения переменной между страницами
+$_SESSION['my_content'] = $my_content;
+
+}*/
+
+//проверка существования поля данного типа
+function checkField(){
+$field_types = \Drupal::service('plugin.manager.field.field_type')->getDefinitions();
+
+//return $field_types['my_logic_field'];
+return $field_types;
 }
 
+//получаем все поля для node.article
+function getAllFieldsForArticle(){
+$entityManager = \Drupal::service('entity_field.manager');
+$fields = $entityManager->getFieldDefinitions('node', 'article');
 
+return $fields;
+
+}
+
+//fielditembase::presave
+
+
+function mm_node_insert(NodeInterface $node){
+/*
+if(checkField()){
+$check_bool = true;
+} else { $check_bool = false;}
 */
+//получение значения поля
+//$node->get('field_me')->value;
+//$check_bool = checkField();
+//$check_bool = getAllFieldsForArticle();
+//$my_content = crosspost($node);
+//$check_bool = $node->baseFieldDefinitions('my_logic_field');
+$z = $_SESSION['z'];
+$title = $node->get($z)->value;
+if($node->bundle() == 'article' and $title == '1' ){
 
+$my_content = crosspost($node);
+  $_SESSION['nid'] = 'crosspost is work';
+}
 
-
-
-
-
-
-
-
-
+//передача значения переменной между страницами
+$_SESSION['my_content'] = $my_content;
+$_SESSION['check_bool'] = $node->get($z)->value;
+$_SESSION['title_myCustomField'] = $title;
+}
 

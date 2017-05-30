@@ -27,12 +27,12 @@ $nid = $node->id();
 
 
 $url_node = $site . '/node/' . $nid;
-$link = '<a href="' . $url_node . '"> Read more</a>'; 
+//$link = '<a href="' . $url_node . '"> Read more</a>'; 
 
 $_SESSION['site'] = $site;
 
 
-return $link;
+return $url_node;
 }
 
 

@@ -49,7 +49,7 @@ class MmForm extends ConfigFormBase {
      $form['id_clienta'] = array(
       '#type' => 'textfield',
       '#title' => $this->t('id клиента'),
-      '#default_value' => 'poka pusto',
+      '#default_value' => $config->get('mm.id_clienta'),
     );
 
     return parent::buildForm($form, $form_state);

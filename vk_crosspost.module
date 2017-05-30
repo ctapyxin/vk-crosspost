@@ -63,11 +63,11 @@ attach($node) .
 '&access_token=' .
 \Drupal::config('vk_crosspost.settings')->get('vk_crosspost.token');
 
-/*
+
 $client = \Drupal::httpClient();
 $request = $client->get($linc_post);
 $response = $request->getBody();
-*/
+
 $_SESSION['my_content'] = $linc_post;
 
 return $linc_post;

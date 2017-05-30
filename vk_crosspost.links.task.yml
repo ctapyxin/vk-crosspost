@@ -1,0 +1,22 @@
+vk_crosspost.for_setting.tab:
+  title: 'id приложения'
+  route_name: vk_crosspost.for_setting
+  base_route: vk_crosspost.for_setting
+
+vk_crosspost.formore_setting:
+  title: 'Получение токена'
+  route_name: vk_crosspost.formore_setting
+  base_route: vk_crosspost.for_setting
+
+vk_crosspost.formore_setting.tab:
+  title: 'Получение токена'
+  route_name: vk_crosspost.formore_setting
+  parent_id: vk_crosspost.formore_setting
+
+vk_crosspost.fornew_setting:
+  title: 'Vk-token'
+  route_name: vk_crosspost.fornew_setting
+  parent_id: vk_crosspost.formore_setting
+
+
+

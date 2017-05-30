@@ -37,7 +37,7 @@ return $link;
 
 
 function attach($node){
-$tumblr = 1;
+$tumblr = 3;
 if ($tumblr == 3){
 return attachLink($node) . ',' . attachPhoto($node);
 } 
